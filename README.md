@@ -7,9 +7,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 1.) Clone the repository in your local using -
 ### `git clone https://github.com/shubham11602152/Product_Cataloge`
-## `cd /Product_Cataloge`
-## `npm i`
-## `git init`
+#### `cd /Product_Cataloge`
+#### `npm i`
+#### `git init`
 
 2.) Switch to "develop" branch using -
 ### `git checkout develop`
