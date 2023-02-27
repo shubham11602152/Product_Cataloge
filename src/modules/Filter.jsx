@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function Filter({
   label,
   variant,
-  options,
+  options = ["no options"],
   filterHandler,
   endIcon,
 }) {
@@ -46,7 +46,7 @@ export default function Filter({
           "aria-labelledby": "basic-button",
         }}
       >
-        {options.map((option, index) => (
+        {options?.map((option, index) => (
           <MenuItem
             key={option}
             selected={selectedIndex === index}
