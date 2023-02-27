@@ -1,7 +1,9 @@
 import {
+  Button,
   CircularProgress,
   Container,
   Grid,
+  Pagination,
   Stack,
   Typography,
 } from "@mui/material";
@@ -12,6 +14,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import Filter from "./Filter";
 import ProductCard from "./ProductCard";
+import SearchProducts from "./SearchProducts";
 
 function reducerProducts(state, action) {
   switch (action.type) {
@@ -53,7 +56,7 @@ const Products = () => {
     filteredProducts: [],
   });
   const [loading, setLoading] = useState(false);
-  const sortByOptions = ["High to Low", "Low to High", "345"];
+  const sortByOptions = ["High to Low", "Low to High"];
 
   useEffect(() => {
     async function fetchProducts() {
@@ -62,7 +65,7 @@ const Products = () => {
       dispatchProducts({ type: "setProductsList", newProductsList: data });
       setLoading(false);
 
-      const categories = data.reduce((acc, curr) => {
+      const categories = data?.reduce((acc, curr) => {
         if (!acc.includes(curr.category)) {
           return [...acc, curr.category];
         }
@@ -71,6 +74,7 @@ const Products = () => {
 
       dispatchProducts({ type: "setCategories", newCategories: categories });
     }
+
     fetchProducts();
 
     return () => {
@@ -121,7 +125,7 @@ const Products = () => {
   const Loader = () => (
     <Container
       sx={{
-        height: "50vh",
+        height: "80vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -130,48 +134,83 @@ const Products = () => {
       <CircularProgress />
     </Container>
   );
+
+  const onSelectHandler = (product) => {
+    dispatchProducts({
+      type: "setFilteredProducts",
+      newProductsList: [product],
+    });
+  };
+
   return (
     <>
-      <Typography variant="h5">Products</Typography>
+      <Typography variant="h5" marginBottom={3}>
+        Products
+      </Typography>
+
       <Stack
-        flexDirection={"row"}
-        justifyContent="flex-end"
-        gap={3}
+        flexDirection={{ xs: "column", sm: "row" }}
+        justifyContent="space-between"
+        gap={{ xs: 2, sm: 3 }}
         marginBottom={2}
       >
-        <Filter
-          variant="outlined"
-          label="Filter"
-          options={products.categories}
-          filterHandler={filterCategoriesHandler}
+        <SearchProducts
+          onSelectHandler={onSelectHandler}
+          productsData={products.productsList}
         />
-        <Filter
-          label="Sort by"
-          options={sortByOptions}
-          filterHandler={filterSortByHandler}
-          endIcon={<KeyboardArrowDownIcon />}
-        />
+
+        <Stack
+          flexDirection={"row"}
+          justifyContent="flex-end"
+          gap={{ xs: 2, sm: 3 }}
+        >
+          <Filter
+            variant="outlined"
+            label="Filter"
+            options={products.categories}
+            filterHandler={filterCategoriesHandler}
+          />
+          <Filter
+            label="Sort by"
+            options={sortByOptions}
+            filterHandler={filterSortByHandler}
+            endIcon={<KeyboardArrowDownIcon />}
+          />
+        </Stack>
       </Stack>
 
       {loading ? (
         <Loader />
       ) : (
-        <Grid
-          container
-          gap={3}
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill,minmax(250px, 1fr))",
-          }}
-        >
-          {products.filteredProducts.map((product) => {
-            const { title, price, image, category, rating } = product;
-            const productCardProps = { title, price, image, category, rating };
+        <>
+          <Grid
+            container
+            gap={3}
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill,minmax(250px, 1fr))",
+            }}
+            paddingY={3}
+          >
+            {products.filteredProducts?.map((product) => {
+              const { title, price, image, category, rating } = product;
+              const productCardProps = {
+                title,
+                price,
+                image,
+                category,
+                rating,
+              };
 
-            return <ProductCard {...productCardProps} key={image} />;
-          })}
-        </Grid>
+              return <ProductCard {...productCardProps} key={image} />;
+            })}
+          </Grid>
+        </>
       )}
+      <Stack justifyContent={"center"}>
+        <Button>Load more</Button>
+        <Pagination />
+      </Stack>
     </>
   );
 };
