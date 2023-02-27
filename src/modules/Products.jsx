@@ -55,7 +55,7 @@ const Products = () => {
     categories: [],
     filteredProducts: [],
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const sortByOptions = ["High to Low", "Low to High"];
 
   useEffect(() => {
@@ -205,12 +205,13 @@ const Products = () => {
               return <ProductCard {...productCardProps} key={image} />;
             })}
           </Grid>
+
+          <Stack justifyContent={"center"}>
+            <Button>Load more</Button>
+            <Pagination />
+          </Stack>
         </>
       )}
-      <Stack justifyContent={"center"}>
-        <Button>Load more</Button>
-        <Pagination />
-      </Stack>
     </>
   );
 };
