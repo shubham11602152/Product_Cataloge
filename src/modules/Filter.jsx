@@ -29,6 +29,7 @@ export default function Filter({
       <Button
         id="basic-button"
         variant={variant}
+        size="small"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
