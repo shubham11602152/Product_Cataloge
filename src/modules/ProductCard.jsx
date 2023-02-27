@@ -9,44 +9,22 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-let dollarUS = Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  useGrouping: false,
-});
+import { toDollarUS } from "../common/utils/utilFuncs";
+import styles from "./ProductCard.module.css";
 
 export default function ProductCard({ title, price, category, image, rating }) {
   return (
     <>
-      <Card
-        sx={{
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <Card className={styles.card} elevation={3}>
         <CardMedia
           component="img"
           height="150"
           image={image}
           alt="Paella dish"
         />
-        <Chip
-          label={category}
-          color="primary"
-          sx={{ position: "absolute", top: "16px", left: "16px" }}
-        />
+        <Chip label={category} color="primary" className={styles.chip} />
 
-        <CardContent
-          sx={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            gap: "8px",
-          }}
-        >
+        <CardContent className={styles.cardContent}>
           <Box>
             <Stack
               flexDirection={"row"}
@@ -55,7 +33,7 @@ export default function ProductCard({ title, price, category, image, rating }) {
               marginBottom="8px"
             >
               <Typography variant="h6" color="text.primary">
-                {dollarUS.format(price)}
+                {toDollarUS(price)}
               </Typography>
               <Chip label={category} />
             </Stack>
